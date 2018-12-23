@@ -1,10 +1,4 @@
 package com.example.qixin.java8;
-
 /**
- * 创  建   时  间： 2018/12/23 15:59
- * 版           本: V1.0
- * 作           者: qixin
- * 版  权   所  有: 版权所有(C)2016-2026
+ * 参考资料地址：http://blog.didispace.com/books/java8-tutorial/ch1.html
  */
-public class Readme {
-}

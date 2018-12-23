@@ -6,5 +6,8 @@ package com.example.qixin.java8;
  * 作           者: qixin
  * 版  权   所  有: 版权所有(C)2016-2026
  */
-public interface PersonFactory {
+public interface PersonFactory<P extends Person> {
+
+    P create(String firstName, String lastName);
+
 }

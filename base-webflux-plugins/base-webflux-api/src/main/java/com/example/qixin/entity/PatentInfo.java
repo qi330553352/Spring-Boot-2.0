@@ -17,7 +17,9 @@ import java.util.Date;
 @Document(collection = "PatentInfo")
 public class PatentInfo implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 1606226992257392222L;
+	
+	@Id
     private String id;
     private String fileType;
     /** 公开（公告）号 */

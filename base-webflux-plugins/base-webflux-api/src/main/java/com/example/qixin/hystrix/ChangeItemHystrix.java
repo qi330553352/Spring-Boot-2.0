@@ -1,5 +1,8 @@
 package com.example.qixin.hystrix;
 
-public class ChangeItemHystrix {
+import org.springframework.stereotype.Component;
 
-}
+//@Component
+//public class ChangeItemHystrix implements FallbackFactory<ChangeItem>  {
+//
+//}

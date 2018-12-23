@@ -19,7 +19,12 @@
 	</properties>
 
 	<dependencies>
-
+		<!--Swagger2-->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>1.5.14</version>
+		</dependency>
 	</dependencies>
 
 	<build>
