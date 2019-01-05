@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiOperation;
 import javax.annotation.Resource;
 
 import org.reactivestreams.Publisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +53,10 @@ public interface PatentInfoApi {
     
     @GetMapping("/existsByIds")
     Mono<Boolean> existsByIds(@RequestBody Publisher<String> ids);
-    
-    
+
+    @GetMapping(value="/findList")
+    Flux<PatentInfo> findList(PatentInfo bean);
+
+    @GetMapping(value="/findListByPage")
+    Page<PatentInfo> findListByPage(PatentInfo bean, @PageableDefault(sort = { "idx" },page = 0,size = 10) Pageable page);
 }
