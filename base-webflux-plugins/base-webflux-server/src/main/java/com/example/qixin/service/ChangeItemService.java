@@ -3,10 +3,16 @@ package com.example.qixin.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mongodb.AggregationOutput;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 import lombok.extern.log4j.Log4j2;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -14,6 +20,8 @@ import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.LimitOperation;
 import org.springframework.data.mongodb.core.aggregation.SkipOperation;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.mapreduce.GroupBy;
+import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -37,11 +45,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.skip;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.limit;
 
-/**
- * 创  建   时  间： 2018/12/23 13:07
- * 版           本: V1.0
- * 作           者: qixin
- * 版  权   所  有: 版权所有(C)2016-2026
+/** 一、使用 Query 与 Criteria 查询
  */
 @Log4j2
 @RestController
@@ -52,11 +56,12 @@ public class ChangeItemService implements ChangeItemApi {
 	
 	@Override
 	public Mono<ChangeItem> findById(String id) {
-		Document queryWhere = new Document();
-		Document fieldName = new Document();
-		fieldName.put("id", true);
-		BasicQuery query = new BasicQuery(queryWhere, fieldName);
-		query.addCriteria(Criteria.where("idx").gte(1));
+		Query query = new Query();
+		Document where = new Document();
+		Document attribute = new Document();
+		attribute.put("id", true);
+		BasicQuery query1 = new BasicQuery(where, attribute);
+		query1.addCriteria(Criteria.where("idx").gte(1));
 		
 		//2.----or 多条件查询-----------------
 		Criteria criteria = new Criteria();
@@ -80,6 +85,9 @@ public class ChangeItemService implements ChangeItemApi {
 
 	@Override
 	public Mono<UpdateResult> updateById(String id) {
+
+
+
 		Query query = Query.query(where("id").is(id));
 		Update update = Update.update("idx", 1);
 		return template.updateFirst(query,update, ChangeItem.class);

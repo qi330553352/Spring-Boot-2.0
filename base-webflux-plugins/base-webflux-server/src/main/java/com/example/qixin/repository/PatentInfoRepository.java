@@ -1,6 +1,8 @@
 package com.example.qixin.repository;
 
 import com.example.qixin.entity.PatentInfo;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +14,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PatentInfoRepository extends ReactiveMongoRepository<PatentInfo, String> {
-
 
 }
