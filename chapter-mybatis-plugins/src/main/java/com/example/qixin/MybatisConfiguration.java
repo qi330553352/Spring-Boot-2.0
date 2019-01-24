@@ -12,4 +12,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan(basePackages = "com.example.qixin.mapper")
 public class MybatisConfiguration {
+
 }
