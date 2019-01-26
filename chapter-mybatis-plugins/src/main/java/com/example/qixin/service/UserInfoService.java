@@ -42,7 +42,6 @@ public class UserInfoService{
 
     public UserInfo findById(Long id) {
         Object obj = redisTemplate.opsForValue().get("user:"+id);
-        int a = 1/0;
         log.info("获得redis中的对象:"+obj);
         if(obj instanceof UserInfo){
             return (UserInfo)obj;
