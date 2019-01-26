@@ -42,4 +42,9 @@
         SELECT <include refid="Base_Column_List" />
         FROM user_info
     </select>
+    <select id="findUsers" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_info
+        ORDER BY create_time DESC limit #{start},#{pageSize}
+    </select>
 </mapper>

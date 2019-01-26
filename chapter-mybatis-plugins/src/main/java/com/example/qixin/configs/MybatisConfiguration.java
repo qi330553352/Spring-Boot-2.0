@@ -1,9 +1,9 @@
-package com.example.qixin;
+package com.example.qixin.configs;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
 
-/**
+/** MyBatis配置类
  * 创  建   时  间： 2019/1/22 1:00
  * 版           本: V1.0
  * 作           者: qixin

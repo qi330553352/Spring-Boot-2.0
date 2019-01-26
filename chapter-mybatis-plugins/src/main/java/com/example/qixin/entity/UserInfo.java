@@ -18,4 +18,14 @@ public class UserInfo implements Serializable {
     private String name;
     private int age;
     private Date createTime;
+
+    public UserInfo() {
+    }
+
+    public UserInfo(Long id, String name, int age, Date createTime) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.createTime = createTime;
+    }
 }

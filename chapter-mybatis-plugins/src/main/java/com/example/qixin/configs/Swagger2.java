@@ -1,4 +1,4 @@
-package com.example.qixin;
+package com.example.qixin.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
