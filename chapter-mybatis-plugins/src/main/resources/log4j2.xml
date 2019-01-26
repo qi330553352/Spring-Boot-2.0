@@ -3,8 +3,8 @@
 <!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出-->
 <configuration status="TRACE">
     <properties>
-        <property name="LOG_HOME">logs</property>
-        <property name="BACKUP_HOME">{LOG_HOME}/backup</property><!-- 日志备份目录 -->
+        <property name="LOG_HOME">D:\logs\${SERVER_NAME}</property>
+        <property name="BACKUP_HOME">${LOG_HOME}/backup</property><!-- 日志备份目录 -->
         <property name="STAT_NAME">stat</property>
         <property name="SERVER_NAME">chapter-mybatis-plugins</property>
     </properties>
@@ -13,22 +13,13 @@
         <Console name="Console" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="%d{HH:mm:ss,SSS} %5p %c{1}:%L - %m%n" />
         </Console>
-        <File name="log" fileName="{LOG_HOME}/test.log" append="false">
+        <File name="log" fileName="${LOG_HOME}/test.log" append="true">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
         </File>
         <!-- 程序员调试日志 -->
         <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
-        <RollingFile name="RollingFileInfo" fileName="{LOG_HOME}/info.log" filePattern="{LOG_HOME}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
-            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
-            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
-            <Policies>
-                <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="100 MB"/>
-            </Policies>
-        </RollingFile>
-        <RollingFile name="RollingFileWarn" fileName="{LOG_HOME}/warn.log" filePattern="{LOG_HOME}/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
-            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+        <RollingFile name="RollingFileDebug" fileName="${LOG_HOME}/debug.log" filePattern="${LOG_HOME}/${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
@@ -37,13 +28,24 @@
             <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
             <DefaultRolloverStrategy max="20"/>
         </RollingFile>
-        <RollingFile name="RollingFileError" fileName="{LOG_HOME}/error.log" filePattern="{LOG_HOME}/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
-            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+        <RollingFile name="RollingFileInfo" fileName="${LOG_HOME}/info.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
+        </RollingFile>
+        <RollingFile name="RollingFileWarn" fileName="${LOG_HOME}/warn.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+            <DefaultRolloverStrategy max="20"/>
         </RollingFile>
 
         <!--<RollingRandomAccessFile name="DevLog"  fileName="${LOG_HOME}/${SERVER_NAME}" filePattern="${LOG_HOME}/${SERVER_NAME}.%d{yyyy-MM-dd-HH}.log">
@@ -54,10 +56,21 @@
         </RollingRandomAccessFile>-->
     </appenders>
     <loggers>
-        <logger name="org.springframework" level="INFO"></logger>
-        <logger name="org.mybatis" level="INFO"></logger>
-        <root level="all">
+        <logger name="org.springframework.boot.web.embedded.tomcat" level="INFO">
             <appender-ref ref="Console"/>
+        </logger>
+        <logger name="com.example.qixin" level="TRACE">
+            <appender-ref ref="Console"/>
+        </logger>
+        <logger name="springfox.documentation.spring.web.plugins.DefaultRequestHandlerCombiner" level="DEBUG">
+            <appender-ref ref="Console"/>
+        </logger>
+
+        <logger name="org.hibernate.validator.internal" level="INFO"/>
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="springfox.documentation" level="INFO"/>
+        <root level="INFO">
+            <appender-ref ref="RollingFileDebug"/>
             <appender-ref ref="RollingFileInfo"/>
             <appender-ref ref="RollingFileWarn"/>
             <appender-ref ref="RollingFileError"/>
