@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -28,13 +29,14 @@ public class UserInfoService{
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public int save(UserInfo user) {
         int result = mapper.save(user);
         redisTemplate.opsForValue().set("user:"+user.getId(),user);
         return result;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<UserInfo> findUsers(Integer page, Integer pageSize) {
         Integer start = (page - 1) * pageSize;
         return mapper.findUsers(start,pageSize);
